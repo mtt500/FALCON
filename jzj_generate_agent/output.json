@@ -1,0 +1,29 @@
+[
+  {
+    "func_id": "func_023",
+    "function_name": "authenticate_user",
+    "is_vulnerable": true,
+    "vulnerability_type": "Buffer Overflow",
+    "location": "firmware_v1.2.c line 128",
+    "severity": "high",
+    "description": "The function uses strcpy without boundary checks, allowing attackers to overwrite memory and potentially execute arbitrary code."
+  },
+  {
+    "func_id": "func_183",
+    "function_name": "run_shell_command",
+    "is_vulnerable": true,
+    "vulnerability_type": "Command Injection",
+    "location": "firmware_v1.2.c line 245",
+    "severity": "medium",
+    "description": "User input is directly concatenated into a shell command via sprintf, enabling attackers to execute arbitrary system commands."
+  },
+  {
+    "func_id": "func_091",
+    "function_name": "parse_http_header",
+    "is_vulnerable": false,
+    "vulnerability_type": "",
+    "location": "http.c line 88",
+    "severity": "",
+    "description": "No vulnerabilities detected in this function."
+  }
+]
