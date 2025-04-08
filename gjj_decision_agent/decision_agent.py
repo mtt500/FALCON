@@ -1,3 +1,4 @@
+import json
 import os
 from llama_index.core import Settings
 from llama_index.llms.openai import OpenAI
@@ -38,6 +39,42 @@ def simple_vulnerability_checker(c_code: str) -> str:
         return "No vulnerabilities found."
 
 
+# 读取 C 语言代码的函数
+def read_c_code_from_file(file_path: str) -> str:
+    """
+    从指定的文件读取 C 语言代码。
+
+    参数:
+    file_path (str): C 语言源代码文件的路径。
+
+    返回:
+    str: 文件中的 C 语言代码。
+    """
+    try:
+        with open(file_path, "r") as file:
+            return file.read()  # 返回文件内容
+    except Exception as e:
+        print(f"Error reading file {file_path}: {e}")
+        return ""
+
+
+# 输出漏洞检测结果为 JSON 文件的函数
+def output_vulnerability_report_as_json(report_data: dict, output_file: str):
+    """
+    将漏洞检测结果保存为 JSON 文件。
+
+    参数:
+    report_data (dict): 包含漏洞信息的字典。
+    output_file (str): 输出 JSON 文件的路径。
+    """
+    try:
+        with open(output_file, "w") as json_file:
+            json.dump(report_data, json_file, indent=4)  # 将结果写入 JSON 文件
+        print(f"Vulnerability report saved to {output_file}")
+    except Exception as e:
+        print(f"Error writing JSON to {output_file}: {e}")
+
+
 # 定义代理输入组件
 def agent_input_fn(state: Dict[str, Any]) -> str:
     """代理输入函数，返回任务输入"""
@@ -54,14 +91,15 @@ agent_input_component = StatefulFnComponent(fn=agent_input_fn)
 
 # 定义代理提示符生成函数
 def react_prompt_fn(state: Dict[str, Any], input: str, tools: List) -> List:
-    task = state["task"]
-    chat_formatter = ReActChatFormatter()
+    task = state["task"]  # 从状态中提取当前的任务
+    chat_formatter = ReActChatFormatter()  # 创建一个 ReActChatFormatter 实例，用于格式化聊天内容
     cur_prompt = chat_formatter.format(
-        tools,
-        chat_history=task.memory.get(),
-        current_reasoning=state["current_reasoning"],
+        tools,  # 传入工具
+        chat_history=task.memory.get(),  # 获取任务的聊天历史
+        current_reasoning=state["current_reasoning"],  # 获取当前的推理步骤
     )
-    return cur_prompt
+    return cur_prompt  # 返回生成的提示符
+
 
 
 # react_prompt_component 使用 StatefulFnComponent 将该函数包装成一个代理组件
@@ -70,12 +108,12 @@ react_prompt_component = StatefulFnComponent(
 )
 
 
-# 定义代理输出解析器
+# 定义代理输出解析器，从 GPT 响应中提取推理步骤，并判断推理是否完成
 def parse_react_output_fn(state: Dict[str, Any], chat_response: ChatResponse):
     """解析ReAct输出"""
     output_parser = ReActOutputParser()
     reasoning_step = output_parser.parse(chat_response.message.content)
-    return {"done": reasoning_step.is_done, "reasoning_step": reasoning_step}
+    return {"done": reasoning_step.is_done, "reasoning_step": reasoning_step}  # 返回是否完成推理的标志和推理步骤
 
 
 parse_react_output = StatefulFnComponent(fn=parse_react_output_fn)
@@ -126,6 +164,7 @@ qp.add_link(
     condition_fn=lambda x: not x["done"],
     input_fn=lambda x: x["reasoning_step"],
 )
+
 qp.add_link(
     "react_output_parser",
     "process_response",
@@ -164,8 +203,36 @@ agent = FnAgentWorker(
     initial_state={"query_pipeline": qp, "is_first": True},
 ).as_agent()
 
+c_code = read_c_code_from_file("ex_val.c")  # 读取文件中的 C 语言代码
+
+custom_prompt = f"""
+You are a security expert analyzing C code for vulnerabilities. 
+Your task is to analyze the following C code and return a JSON object with the following fields:
+- function_name: The name of the function being analyzed.
+- is_vulnerable: A boolean indicating whether the code contains a vulnerability.
+- vulnerability_type: The type of vulnerability found (e.g., buffer overflow, command injection).
+- severity: The severity of the vulnerability (e.g., low, medium, high).
+- description: A detailed description of the vulnerability, explaining why it is a vulnerability and how it can be exploited.
+
+C code:
+{c_code}
+
+Please return the analysis in the following JSON format:
+{{
+    "function_name": "function_name_here",
+    "is_vulnerable": true_or_false,
+    "vulnerability_type": "vulnerability_type_here",
+    "severity": "severity_level_here",
+    "description": "detailed_description_here"
+}}
+"""
+
+if not c_code:
+    print("Error: Failed to read C code from file.")
+    exit(1)  # 如果读取失败，退出程序或做其他处理
+
 # 启动代理任务
-task = agent.create_task("Check if the following C code contains vulnerabilities: \nchar buf[10]; \nstrcpy(buf, \"A very long string!\");")
+task = agent.create_task(custom_prompt)
 
 # 运行任务，直到任务完成
 while True:
@@ -180,6 +247,7 @@ print(str(response))
 
 
 '''
+1.0 版输出
 D:\deep_learning\Anaconda\envs\lamaindex\python.exe D:/Desktop/xas/FALCON/gjj_decision_agent/decision_agent.py
 > Running module agent_input with input: 
 
@@ -219,4 +287,8 @@ response_step: thought="I can answer without using any more tools. I'll use the 
 Yes, the provided C code contains a vulnerability. The use of strcpy to copy a long string into a buffer of size 10 can lead to a buffer overflow, which is a security risk.
 
 Process finished with exit code 0
+
+
+
+2.0版输出（从文件中读代码并输出成json文件）
 '''
