@@ -1,0 +1,23 @@
+[
+    {
+        "function_name": "vulnerable_function",
+        "is_vulnerable": true,
+        "vulnerability_type": "Buffer Overflow",
+        "severity": "high",
+        "description": "The function uses gets to read input into a fixed-length buffer without boundary checks, allowing attackers to overflow the buffer and potentially execute arbitrary code."
+    },
+    {
+        "function_name": "sql_query_gjj",
+        "is_vulnerable": true,
+        "vulnerability_type": "SQL Injection",
+        "severity": "high",
+        "description": "The function constructs SQL queries using string concatenation, allowing an attacker to manipulate the 'username' input to perform SQL injection attacks. This can lead to unauthorized data access or manipulation."
+    },
+    {
+        "function_name": "add",
+        "is_vulnerable": false,
+        "vulnerability_type": "",
+        "severity": "",
+        "description": "The function simply adds two integers and returns the result. There are no common vulnerabilities such as buffer overflow or improper memory management present in this code snippet."
+    }
+]
