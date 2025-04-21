@@ -1,23 +1,26 @@
 [
     {
-        "function_name": "vulnerable_function",
+        "function_name": "vulnerable_gets",
         "is_vulnerable": true,
         "vulnerability_type": "Buffer Overflow",
         "severity": "high",
-        "description": "The function uses gets to read input into a fixed-length buffer without boundary checks, allowing attackers to overflow the buffer and potentially execute arbitrary code."
+        "description": "The function uses 'gets()' which does not check for buffer overflows. This allows an attacker to input more data than the allocated buffer size (10 bytes), leading to potential memory corruption and arbitrary code execution.",
+        "code_snippet": "void vulnerable_gets() {\n    char buffer[10];\n    printf(\"Enter some text: \");\n    gets(buffer);  // 使用 gets 可能导致缓冲区溢出\n    printf(\"You entered: %s\\n\", buffer);\n}"
     },
     {
         "function_name": "sql_query_gjj",
         "is_vulnerable": true,
         "vulnerability_type": "SQL Injection",
         "severity": "high",
-        "description": "The function constructs SQL queries using string concatenation, allowing an attacker to manipulate the 'username' input to perform SQL injection attacks. This can lead to unauthorized data access or manipulation."
+        "description": "The function constructs an SQL query using user input (username) without proper sanitization, leading to potential SQL injection vulnerabilities. An attacker could exploit this by injecting malicious SQL code through the username parameter, compromising the database integrity and exposing sensitive data.",
+        "code_snippet": "#include <stdio.h>\n#include <sqlite3.h>\n\nvoid sql_query_gjj(sqlite3 *db, const char *username) {\n\tchar query[256];\n\tsnprintf(query, sizeof(query), \"SELECT * FROM users WHERE username = '%s'\", username);\n\t\n\tsqlite3_stmt *stmt;\n\tint rc = sqlite3_prepare_v2(db, query, -1, &stmt, NULL);\n\tif (rc != SQLITE_OK) {\n\t\tfprintf(stderr, \"SQL error: %s\\n\", sqlite3_errmsg(db));\n\t\treturn;\n\t}\n\t\n\twhile (sqlite3_step(stmt) == SQLITE_ROW) {\n\t\tconst unsigned char *username = sqlite3_column_text(stmt, 0);\n\t\tprintf(\"Username: %s\\n\", username);\n\t}\n\t\n\tsqlite3_finalize(stmt);\n}\n"
     },
     {
         "function_name": "add",
         "is_vulnerable": false,
         "vulnerability_type": "",
         "severity": "",
-        "description": "The function simply adds two integers and returns the result. There are no common vulnerabilities such as buffer overflow or improper memory management present in this code snippet."
+        "description": "The function performs a simple addition operation and does not contain any vulnerabilities such as buffer overflow, improper memory management, or others.",
+        "code_snippet": "#include <stdio.h>\n\nint add(int a, int b) {\n    return a + b;\n}"
     }
 ]
