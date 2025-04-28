@@ -1,26 +1,30 @@
-[
-    {
-        "function_name": "vulnerable_gets",
-        "is_vulnerable": true,
-        "vulnerability_type": "Buffer Overflow",
-        "severity": "high",
-        "description": "The function uses 'gets()' which does not check for buffer overflows. This allows an attacker to input more data than the allocated buffer size (10 bytes), leading to potential memory corruption and arbitrary code execution.",
-        "code_snippet": "void vulnerable_gets() {\n    char buffer[10];\n    printf(\"Enter some text: \");\n    gets(buffer);  // 使用 gets 可能导致缓冲区溢出\n    printf(\"You entered: %s\\n\", buffer);\n}"
-    },
-    {
-        "function_name": "sql_query_gjj",
-        "is_vulnerable": true,
-        "vulnerability_type": "SQL Injection",
-        "severity": "high",
-        "description": "The function constructs an SQL query using user input (username) without proper sanitization, leading to potential SQL injection vulnerabilities. An attacker could exploit this by injecting malicious SQL code through the username parameter, compromising the database integrity and exposing sensitive data.",
-        "code_snippet": "#include <stdio.h>\n#include <sqlite3.h>\n\nvoid sql_query_gjj(sqlite3 *db, const char *username) {\n\tchar query[256];\n\tsnprintf(query, sizeof(query), \"SELECT * FROM users WHERE username = '%s'\", username);\n\t\n\tsqlite3_stmt *stmt;\n\tint rc = sqlite3_prepare_v2(db, query, -1, &stmt, NULL);\n\tif (rc != SQLITE_OK) {\n\t\tfprintf(stderr, \"SQL error: %s\\n\", sqlite3_errmsg(db));\n\t\treturn;\n\t}\n\t\n\twhile (sqlite3_step(stmt) == SQLITE_ROW) {\n\t\tconst unsigned char *username = sqlite3_column_text(stmt, 0);\n\t\tprintf(\"Username: %s\\n\", username);\n\t}\n\t\n\tsqlite3_finalize(stmt);\n}\n"
-    },
-    {
-        "function_name": "add",
-        "is_vulnerable": false,
-        "vulnerability_type": "",
-        "severity": "",
-        "description": "The function performs a simple addition operation and does not contain any vulnerabilities such as buffer overflow, improper memory management, or others.",
-        "code_snippet": "#include <stdio.h>\n\nint add(int a, int b) {\n    return a + b;\n}"
+{
+    "data": {
+        "vulnerabilities": [
+            {
+                "function_name": "mainCRTStartup",
+                "is_vulnerable": false,
+                "vulnerability_type": "N/A",
+                "severity": "N/A",
+                "description": "No vulnerabilities were detected in the provided code snippet.",
+                "code_snippet": "void mainCRTStartup(undefined8 param_1,undefined8 param_2,undefined8 param_3)\n\n{\n  *(undefined4 *)_refptr_mingw_app_type = 0;\n\n  __security_init_cookie();\n  __tmainCRTStartup(param_1,param_2,param_3);\n  return;\n}"
+            },
+            {
+                "function_name": "atexit",
+                "is_vulnerable": false,
+                "vulnerability_type": "N/A",
+                "severity": "N/A",
+                "description": "No vulnerabilities were found in the provided C code snippet.",
+                "code_snippet": "int __cdecl atexit(_func_5\n014 *param_1)\n\n{\n  _onexit_t p_Var1;\n  \n  p_Var1 = _onexit((_onexit_t)param_1);\n  return -(uint)(p_Var1 == (_onexit_t)0x0);\n}"
+            },
+            {
+                "function_name": "vulnerable_function",
+                "is_vulnerable": true,
+                "vulnerability_type": "Buffer Overflow",
+                "severity": "high",
+                "description": "The function uses strcpy without boundary checks, which can lead to buffer overflow vulnerabilities where an attacker can overwrite memory beyond the allocated space for local_12, potentially causing a security risk and allowing arbitrary code execution.",
+                "code_snippet": "void vulnerable_function(char *param_1)\n\n{\n  char local_12 [10];\n  \n  strcpy(local_12,param_1);\n  return;\n}\n\n\n-----------------------------------\n-----"
+            }
+        ]
     }
-]
+}
