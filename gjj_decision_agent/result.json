@@ -23,7 +23,7 @@
                 "vulnerability_type": "Buffer Overflow",
                 "severity": "high",
                 "description": "The function uses strcpy without boundary checks, which can lead to buffer overflow vulnerabilities where an attacker can overwrite memory beyond the allocated space for local_12, potentially causing a security risk and allowing arbitrary code execution.",
-                "code_snippet": "void vulnerable_function(char *param_1)\n\n{\n  char local_12 [10];\n  \n  strcpy(local_12,param_1);\n  return;\n}\n\n\n-----------------------------------\n-----"
+                "code_snippet": "void vulnerable_function(char *param_1)\n\n{\n  char local_12 [10];\n  \n  strcpy(local_12,param_1);\n  return;\n}\n\n"
             }
         ]
     }

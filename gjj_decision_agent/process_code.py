@@ -34,6 +34,9 @@ def filter_and_extract_functions(functions):
                 # 提取函数代码，"Function: <func_name>" 后面的内容
                 code_snippet = func[len(match.group(0)):].strip()  # 去除 "Function: <func_name>" 部分
 
+                # 删除所有 "----------" 分隔符部分
+                code_snippet = code_snippet.replace("-----------------------------------", "").strip()
+
                 # 添加字典到结果列表
                 filtered_functions.append({
                     "func_name": func_name,
