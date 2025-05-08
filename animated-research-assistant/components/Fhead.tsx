@@ -15,7 +15,7 @@ export default function Navbar() {
     >
       <Link href="/" className="flex items-center space-x-2">
         <Bot className="w-8 h-8 text-purple-600" />
-        <span className="text-white font-medium text-xl">Falcon</span>
+        <span className="text-white font-medium text-xl">FALCON</span>
       </Link>
 
       <div className="hidden md:flex items-center space-x-8 absolute left-1/2 transform -translate-x-1/2">

@@ -43,7 +43,7 @@ export default function HowItWorks() {
       <section className="text-center py-16 px-6 max-w-3xl mx-auto z-10 relative">
         <h2 className="text-4xl font-bold text-white mb-4">How It Works</h2>
         <p className="text-gray-400 text-lg">
-          Falcon 自动分析固件/网站漏洞并提供可操作的安全建议。只需三步，即可获取安全洞察。
+          FALCON 自动分析固件/网站漏洞并提供可操作的安全建议。只需三步，即可获取安全洞察。
         </p>
       </section>
 
