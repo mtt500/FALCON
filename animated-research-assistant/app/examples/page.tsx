@@ -90,7 +90,7 @@ const [showConfirm, setShowConfirm] = useState(false)
               <path d="M15 13v2" />
               <path d="M9 13v2" />
             </svg>
-            Falcon
+            FALCON
           </div>
             <nav className="ml-auto flex items-center space-x-4">
              <div className="hidden md:flex items-center space-x-8 absolute left-1/2 transform -translate-x-1/2">

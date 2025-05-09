@@ -4,13 +4,14 @@ import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, ResponsiveCo
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown from "react-markdown";  // 用于渲染 Markdown 格式的文本
 import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import jsPDF from 'jspdf';
+import jsPDF from 'jspdf';  // 导入 jsPDF 用于生成 PDF
 import html2canvas from 'html2canvas';
+import MarkdownRenderer from "@/components/MarkdownRenderer"; // 导入自定义的 Markdown 渲染器
 
-const COLORS = ["#ef4444", "#f59e0b", "#3b82f6"];
+const COLORS = ["#ef4444", "#f59e0b", "#3b82f6"];  // 固件的颜色配置
 
 const firmwareOptions = [
   {
@@ -99,34 +100,36 @@ const firmwareOptions = [
 ];
 
 export default function Report() {
-  const [selectedFirmware, setSelectedFirmware] = useState(firmwareOptions[0]);
-  const [filteredModule, setFilteredModule] = useState<string | null>(null);
-  const [content, setContent] = useState("");
+  const [selectedFirmware, setSelectedFirmware] = useState(firmwareOptions[0]); // 当前选中的固件
+  const [filteredModule, setFilteredModule] = useState<string | null>(null); // 筛选的模块
+  const [content, setContent] = useState(""); // Markdown 报告内容
 
- useEffect(() => {
-  const markdownName = selectedFirmware.name.replace(/\.(bin|img)$/, ".md")
-  fetch(`/reports/${markdownName}`)
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error("文件不存在或加载失败")
-      }
-      return res.text()
-    })
-    .then((text) => setContent(text))
-    .catch((err) => {
-      console.error("加载报告失败:", err)
-      setContent("## 暂无报告\n该固件暂无对应的 Markdown 报告文件。")
-    })
+  // 获取对应固件的 Markdown 报告
+  useEffect(() => {
+    const markdownName = selectedFirmware.name.replace(/\.(bin|img)$/, ".md")
+    fetch(`/reports/${markdownName}`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("文件不存在或加载失败")
+        }
+        return res.text()
+      })
+      .then((text) => setContent(text))
+      .catch((err) => {
+        console.error("加载报告失败:", err)
+        setContent("## 暂无报告\n该固件暂无对应的 Markdown 报告文件。")
+      })
 }, [selectedFirmware])
 
 
 
+// 根据筛选的模块过滤漏洞数据
+const vulnerabilities = filteredModule
+  ? selectedFirmware.vulnerabilities.filter((v) => v.module === filteredModule)
+  : selectedFirmware.vulnerabilities;
 
-  const vulnerabilities = filteredModule
-    ? selectedFirmware.vulnerabilities.filter((v) => v.module === filteredModule)
-    : selectedFirmware.vulnerabilities;
-
- const exportToPDF = () => {
+// 导出报告为 PDF
+const exportToPDF = () => {
   const reportContainer = document.getElementById("report-container");
   if (!reportContainer) return;
   html2canvas(reportContainer, { scale: 2 }).then((canvas) => {
@@ -228,7 +231,8 @@ export default function Report() {
       {/* Markdown 展示独立一块 */}
       <div className="bg-gray-900/60 rounded-lg p-6 border border-gray-800 shadow-md prose prose-invert max-w-none mb-12">
         <h2 className="text-lg font-semibold mb-4">漏洞详情报告</h2>
-        <ReactMarkdown>{content}</ReactMarkdown>
+        {/* <ReactMarkdown>{content}</ReactMarkdown> */}
+        <MarkdownRenderer content={content} />
       </div>
     </div>
   </div>

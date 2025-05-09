@@ -7,7 +7,8 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-black/[0.96] antialiased bg-grid-white/[0.02] relative overflow-hidden">
       {/* Ambient background with moving particles */}
-      <div className="h-full w-full absolute inset-0 z-0">
+      {/* <div className="h-full w-full absolute inset-0 z-0"> */}
+      <div className="fixed inset-0 z-0">
         <SparklesCore
           id="tsparticlesfullpage"
           background="transparent"
@@ -22,7 +23,7 @@ export default function Home() {
 
       <div className="relative z-10">
         <HIW />
-        <Reportbody />
+        <Reportbody />  {/* 显示报告正文 */}
       </div>
     </main>
   )

@@ -1,0 +1,114 @@
+/* MarkdownRenderer.module.css */
+
+/* 通用文本样式 */
+.prose {
+  max-width: 100%;
+  margin: 0 auto;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: white; /* 所有文本默认使用白色 */
+}
+
+/* 标题样式 */
+.prose h1, .prose h2, .prose h3 {
+  color: white;  /* 确保标题文本为白色 */
+}
+
+.prose h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.prose h2 {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.prose h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* 段落样式 */
+.prose p {
+  margin-bottom: 1rem;
+  color: white; /* 白色文字 */
+}
+
+/* 无序列表（小标题前的圆点） */
+.prose ul {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.prose li {
+  margin-bottom: 0.5rem;
+  color: white; /* 白色文字 */
+  list-style-type: disc; /* 使用圆点符号 */
+}
+
+/* 有序列表（修复建议的序号） */
+.prose ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.prose ol li {
+  margin-bottom: 0.5rem;
+  color: white; /* 白色文字 */
+  list-style-type: decimal; /* 使用数字序号 */
+}
+
+/* 代码块 */
+.prose pre {
+  background-color: #1e1e1e;
+  color: #f8f8f8;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+/* .prose code {
+  background-color: #333;
+  color: #f8f8f8;
+  padding: 0.2rem 0.4rem;
+  border-radius: 5px;
+} */
+
+/* 引用 */
+.prose blockquote {
+  background-color: #f0f0f0;
+  border-left: 4px solid #7f3c97;
+  padding-left: 1rem;
+  font-style: italic;
+  color: white; /* 白色文字 */
+  margin: 1rem 0;
+}
+
+/* 链接 */
+.prose a {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+.prose a:hover {
+  color: #1d4ed8;
+}
+
+/* 分隔线 */
+.prose hr {
+  border: none;
+  border-top: 1px solid #e5e5e5;
+  margin: 1.5rem 0;
+}
+
+/* 图片 */
+.prose img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}

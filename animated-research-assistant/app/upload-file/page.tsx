@@ -4,30 +4,77 @@ import React, { useState } from "react"
 import Step1 from "./Step1"
 import Step2 from "./Step2"
 import Step3 from "./Step3"
-import Link from "next/link"
+import Step4 from "./Step4"  // 导入第四步组件
+// import Link from "next/link"
 import Fhead from "@/components/Fhead"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { SparklesCore } from "@/components/SparklesCore"
 import {FloatingPaper} from "@/components/floating-paper"
-import { RoboAnimation } from "@/components/robo-animation";
+import { RoboAnimation } from "@/components/robo-animation"
+// import { useRouter } from "next/router";
 
 export default function UploadWizardPage() {
-  const [step, setStep] = useState(1)
-  const [taskName, setTaskName] = useState("")
-  const [model, setModel] = useState("")
-  const [file, setFile] = useState<File | null>(null)
+  const [step, setStep] = useState(1)  // 当前步骤，初始为步骤 1
+  const [taskName, setTaskName] = useState("")  // 任务名称
+  const [model, setModel] = useState("")  // 固件型号
+  const [file, setFile] = useState<File | null>(null)  // 上传的文件，初始为 null
+  const [message1, setMessage1] = useState("")  // 用于存储后端返回的 message1
+  // const [isLoading, setIsLoading] = useState(false)  // 用于控制加载状态
+  // const router = useRouter()  // 用于跳转到 /report
 
-  const next = () => setStep((prev) => Math.min(prev + 1, 3))
-  const prev = () => setStep((prev) => Math.max(prev - 1, 1))
+  // const next = () => setStep((prev) => Math.min(prev + 1, 3))  // 下一步
+  const prev = () => setStep((prev) => Math.max(prev - 1, 1))  // 上一步
+  const next = () => {
+  setStep((prev) => {
+    const newStep = Math.min(prev + 1, 4);
+    console.log("当前步骤：", newStep);  // 打印新的步骤
+    return newStep;
+  });
+};
 
-  const handleSubmit = () => {
+  // 提交任务处理函数
+  const handleSubmit = async () => {
+    // 检查是否填写完整信息
     if (!taskName || !model || !file) {
       alert("请填写完整信息")
       return
     }
-    alert(`创建成功：\n任务名称: ${taskName}\n固件型号: ${model}\n文件: ${file.name}`)
-    // 可替换为路由跳转或 API 提交逻辑
+
+    // 创建 FormData 对象，将文件加入到表单数据中
+    const formData = new FormData()
+    formData.append("file", file)
+  
+    try {
+      // 发送 POST 请求，将文件上传到后端
+      const res = await fetch("http://localhost:8000/upload/", {
+        method: "POST",
+        body: formData,  // 将文件数据作为请求体发送
+      })
+  
+      // 如果响应状态不是 OK（200），抛出错误
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+
+      // 打印后端返回的原始响应内容和类型
+      const text = await res.text()
+      // 解析响应为 JSON 格式
+      const data = JSON.parse(text)
+      console.log('message2:', data.message2)
+
+      // alert(`后端返回：\n${data.message1}\n${data.message2}`)
+
+      // 获取后端返回的 message1
+      setMessage1(data.message1)
+
+
+      // 提交成功后，跳转到第四步
+      // setIsLoading(true)  // 开始加载动画
+      next()  // 跳到第四步
+      console.log('已经跳转第四步？')
+    } catch (err) {
+      console.error(err)
+      alert("上传失败，请查看控制台日志")
+    }
   }
 
   return (
@@ -36,15 +83,17 @@ export default function UploadWizardPage() {
       <Fhead />
 
       {/* 背景粒子效果 */}
-      <SparklesCore
-        id="wizard-bg"
-        background="transparent"
-        className="absolute inset-0 z-0"
-        particleColor="#8b5cf6"
-        particleDensity={80}
-        minSize={0.5}
-        maxSize={1.4}
-      />
+      <div className="fixed inset-0 z-0">
+        <SparklesCore
+          id="wizard-bg"
+          background="transparent"
+          className="absolute inset-0 z-0"
+          particleColor="#8b5cf6"
+          particleDensity={80}
+          minSize={0.5}
+          maxSize={1.4}
+        />
+      </div>
 
       <div className="absolute inset-0 overflow-hidden">
         <FloatingPaper count={6} />
@@ -67,18 +116,26 @@ export default function UploadWizardPage() {
           {step === 1 && <Step1 taskName={taskName} setTaskName={setTaskName} />}
           {step === 2 && <Step2 model={model} setModel={setModel} />}
           {step === 3 && <Step3 file={file} setFile={setFile} />}
+          {step === 4 && <Step4 taskName={taskName} model={model} file={file} message1={message1} />}  {/* 将 message1 传递到第四步 */}
         </div>
 
         {/* 步骤控制按钮 */}
         <div className="mt-8 flex justify-between w-full">
-          <Button variant="outline" onClick={prev} disabled={step === 1}>上一步</Button>
-          {step < 3 ? (
-            <Button className="bg-purple-600 hover:bg-purple-700 text-white" onClick={next}>下一步</Button>
-          ) : (
-              <Link href="/">
-                <Button className="bg-purple-600 hover:bg-purple-700 text-white" onClick={handleSubmit}>创建任务</Button>
-              </Link>
+          {/* 只有在 step !== 4 时才显示 "上一步" 按钮 */}
+          {step !== 4 && (
+            <Button variant="outline" onClick={prev} disabled={step === 1}>上一步</Button>
           )}
+          
+          {step === 1 || step === 2 ? (
+            <Button className="bg-purple-600 hover:bg-purple-700 text-white" onClick={next}>下一步</Button>
+          ) : null}
+
+          {step === 3 ? (
+            <Button className="bg-purple-600 hover:bg-purple-700 text-white" onClick={handleSubmit}>
+              创建任务
+            </Button>
+          ) : null}
+
         </div>
       </div>
         <div className="absolute bottom-10 right-10 w-60 h-60 z-10 pointer-events-none">

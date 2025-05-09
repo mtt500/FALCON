@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: "Falcon - Vulnerability Management",
+  title: "FALCON - examples",
   description: "Identify and manage security vulnerabilities",
     generator: 'v0.dev'
 }
