@@ -119,7 +119,9 @@ export default function UploadWizardPage() {
           {step === 1 && <Step1 taskName={taskName} setTaskName={setTaskName} />}
           {step === 2 && <Step2 model={model} setModel={setModel} />}
           {step === 3 && <Step3 file={file} setFile={setFile} />}
-          {step === 4 && <Step4 taskName={taskName} model={model} file={file} message1={message1} />}  {/* 将 message1 传递到第四步 */}
+          {/* 将 message1 传递到第四步 */}
+          {/* {step === 4 && <Step4 taskName={taskName} model={model} file={file} message1={message1} />} */}
+          {step === 4 && <Step4 taskName={taskName} model={model} file={file} />}
         </div>
 
         {/* 步骤控制按钮 */}
