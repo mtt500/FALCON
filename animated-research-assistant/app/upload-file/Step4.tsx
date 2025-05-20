@@ -37,20 +37,20 @@ export default function Step4({
   const steps = [
     {
       icon: <Upload className="w-8 h-8 text-purple-500" />,
-      title: "正在反编译",
-      desc: "正在反编译固件代码...",
+      title: "反编译  代码解析智能体",
+      desc: "可选工具: ghidra, IDA, radare2, capstone, llm4decompile...",
       api: "upload",
     },
     {
       icon: <Search className="w-8 h-8 text-purple-500" />,
-      title: "正在进行漏洞扫描",
-      desc: "决策agent运行检测，精准识别潜在威胁...",
+      title: "漏洞扫描  决策智能体",
+      desc: "可选工具: horusec, flawfinder, cppcheck, splintl;  RAG 知识库: NIST",
       api: "analysis",
     },
     {
       icon: <ShieldCheck className="w-8 h-8 text-purple-500" />,
-      title: "正在获取报告",
-      desc: "正在生成漏洞检测报告...",
+      title: "获取报告  报告生成智能体",
+      desc: "RAG 知识库: wooyun, Google bug hunter",
       api: "report",
     },
   ];
