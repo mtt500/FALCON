@@ -1,0 +1,606 @@
+Function: mainCRTStartup
+
+void mainCRTStartup(undefined8 param_1,undefined8 param_2,undefined8 param_3)
+
+{
+  *(undefined4 *)_refptr_mingw_app_type = 0;
+  __security_init_cookie();
+  __tmainCRTStartup(param_1,param_2,param_3);
+  return;
+}
+
+
+----------------------------------------
+Function: atexit
+
+int __cdecl atexit(_func_5014 *param_1)
+
+{
+  _onexit_t p_Var1;
+  
+  p_Var1 = _onexit((_onexit_t)param_1);
+  return -(uint)(p_Var1 == (_onexit_t)0x0);
+}
+
+
+----------------------------------------
+Function: vulnerable_function
+
+void vulnerable_function(char *param_1)
+
+{
+  char local_12 [10];
+  
+  strcpy(local_12,param_1);
+  return;
+}
+
+
+----------------------------------------
+Function: main
+
+int __cdecl main(int _Argc,char **_Argv,char **_Env)
+
+{
+  undefined8 local_28;
+  undefined8 local_20;
+  undefined4 local_18;
+  
+  __main();
+  local_28 = 0x4141414141414141;
+  local_20 = 0x4141414141414141;
+  local_18 = 0x41414141;
+  vulnerable_function((char *)&local_28);
+  return 0;
+}
+
+
+----------------------------------------
+Function: fpreset
+
+void __cdecl fpreset(void)
+
+{
+  return;
+}
+
+
+----------------------------------------
+Function: vfprintf
+
+int __cdecl vfprintf(FILE *_File,char *_Format,va_list _ArgList)
+
+{
+  int iVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402a70. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  iVar1 = vfprintf(_File,_Format,_ArgList);
+  return iVar1;
+}
+
+
+----------------------------------------
+Function: strncmp
+
+int __cdecl strncmp(char *_Str1,char *_Str2,size_t _MaxCount)
+
+{
+  int iVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402a78. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  iVar1 = strncmp(_Str1,_Str2,_MaxCount);
+  return iVar1;
+}
+
+
+----------------------------------------
+Function: strlen
+
+size_t __cdecl strlen(char *_Str)
+
+{
+  size_t sVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402a80. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  sVar1 = strlen(_Str);
+  return sVar1;
+}
+
+
+----------------------------------------
+Function: strcpy
+
+char * __cdecl strcpy(char *_Dest,char *_Source)
+
+{
+  char *pcVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402a88. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  pcVar1 = strcpy(_Dest,_Source);
+  return pcVar1;
+}
+
+
+----------------------------------------
+Function: signal
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void signal(int param_1)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x00402a90. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  (*___imp_signal)();
+  return;
+}
+
+
+----------------------------------------
+Function: memcpy
+
+void * __cdecl memcpy(void *_Dst,void *_Src,size_t _Size)
+
+{
+  void *pvVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402a98. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  pvVar1 = memcpy(_Dst,_Src,_Size);
+  return pvVar1;
+}
+
+
+----------------------------------------
+Function: malloc
+
+void * __cdecl malloc(size_t _Size)
+
+{
+  void *pvVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402aa0. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  pvVar1 = malloc(_Size);
+  return pvVar1;
+}
+
+
+----------------------------------------
+Function: fwrite
+
+size_t __cdecl fwrite(void *_Str,size_t _Size,size_t _Count,FILE *_File)
+
+{
+  size_t sVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402aa8. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  sVar1 = fwrite(_Str,_Size,_Count,_File);
+  return sVar1;
+}
+
+
+----------------------------------------
+Function: free
+
+void __cdecl free(void *_Memory)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x00402ab0. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  free(_Memory);
+  return;
+}
+
+
+----------------------------------------
+Function: fprintf
+
+int __cdecl fprintf(FILE *_File,char *_Format,...)
+
+{
+  int iVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402ab8. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  iVar1 = fprintf(_File,_Format);
+  return iVar1;
+}
+
+
+----------------------------------------
+Function: exit
+
+void __cdecl exit(int _Code)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x00402ac0. Too many branches */
+                    /* WARNING: Subroutine does not return */
+                    /* WARNING: Treating indirect jump as call */
+  exit(_Code);
+  return;
+}
+
+
+----------------------------------------
+Function: calloc
+
+void * __cdecl calloc(size_t _Count,size_t _Size)
+
+{
+  void *pvVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402ac8. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  pvVar1 = calloc(_Count,_Size);
+  return pvVar1;
+}
+
+
+----------------------------------------
+Function: abort
+
+void __cdecl abort(void)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x00402ad0. Too many branches */
+                    /* WARNING: Subroutine does not return */
+                    /* WARNING: Treating indirect jump as call */
+  abort();
+  return;
+}
+
+
+----------------------------------------
+Function: VirtualQuery
+
+SIZE_T __stdcall VirtualQuery(LPCVOID lpAddress,PMEMORY_BASIC_INFORMATION lpBuffer,SIZE_T dwLength)
+
+{
+  SIZE_T SVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402b90. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  SVar1 = VirtualQuery(lpAddress,lpBuffer,dwLength);
+  return SVar1;
+}
+
+
+----------------------------------------
+Function: VirtualProtect
+
+BOOL __stdcall
+VirtualProtect(LPVOID lpAddress,SIZE_T dwSize,DWORD flNewProtect,PDWORD lpflOldProtect)
+
+{
+  BOOL BVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402b98. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  BVar1 = VirtualProtect(lpAddress,dwSize,flNewProtect,lpflOldProtect);
+  return BVar1;
+}
+
+
+----------------------------------------
+Function: UnhandledExceptionFilter
+
+LONG __stdcall UnhandledExceptionFilter(_EXCEPTION_POINTERS *ExceptionInfo)
+
+{
+  LONG LVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402ba0. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  LVar1 = UnhandledExceptionFilter(ExceptionInfo);
+  return LVar1;
+}
+
+
+----------------------------------------
+Function: TlsGetValue
+
+LPVOID __stdcall TlsGetValue(DWORD dwTlsIndex)
+
+{
+  LPVOID pvVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402ba8. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  pvVar1 = TlsGetValue(dwTlsIndex);
+  return pvVar1;
+}
+
+
+----------------------------------------
+Function: TerminateProcess
+
+BOOL __stdcall TerminateProcess(HANDLE hProcess,UINT uExitCode)
+
+{
+  BOOL BVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402bb0. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  BVar1 = TerminateProcess(hProcess,uExitCode);
+  return BVar1;
+}
+
+
+----------------------------------------
+Function: Sleep
+
+void __stdcall Sleep(DWORD dwMilliseconds)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x00402bb8. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  Sleep(dwMilliseconds);
+  return;
+}
+
+
+----------------------------------------
+Function: SetUnhandledExceptionFilter
+
+LPTOP_LEVEL_EXCEPTION_FILTER __stdcall
+SetUnhandledExceptionFilter(LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter)
+
+{
+  LPTOP_LEVEL_EXCEPTION_FILTER pPVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402bc0. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  pPVar1 = SetUnhandledExceptionFilter(lpTopLevelExceptionFilter);
+  return pPVar1;
+}
+
+
+----------------------------------------
+Function: RtlVirtualUnwind
+
+PEXCEPTION_ROUTINE __stdcall
+RtlVirtualUnwind(DWORD HandlerType,DWORD64 ImageBase,DWORD64 ControlPc,
+                PRUNTIME_FUNCTION FunctionEntry,PCONTEXT ContextRecord,PVOID *HandlerData,
+                PDWORD64 EstablisherFrame,PKNONVOLATILE_CONTEXT_POINTERS ContextPointers)
+
+{
+  PEXCEPTION_ROUTINE puVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402bc8. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  puVar1 = RtlVirtualUnwind(HandlerType,ImageBase,ControlPc,FunctionEntry,ContextRecord,HandlerData,
+                            EstablisherFrame,ContextPointers);
+  return puVar1;
+}
+
+
+----------------------------------------
+Function: RtlLookupFunctionEntry
+
+PRUNTIME_FUNCTION __stdcall
+RtlLookupFunctionEntry(DWORD64 ControlPc,PDWORD64 ImageBase,PUNWIND_HISTORY_TABLE HistoryTable)
+
+{
+  PRUNTIME_FUNCTION p_Var1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402bd0. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  p_Var1 = RtlLookupFunctionEntry(ControlPc,ImageBase,HistoryTable);
+  return p_Var1;
+}
+
+
+----------------------------------------
+Function: RtlAddFunctionTable
+
+BOOLEAN __cdecl
+RtlAddFunctionTable(PRUNTIME_FUNCTION FunctionTable,DWORD EntryCount,DWORD64 BaseAddress)
+
+{
+  BOOLEAN BVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402be0. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  BVar1 = RtlAddFunctionTable(FunctionTable,EntryCount,BaseAddress);
+  return BVar1;
+}
+
+
+----------------------------------------
+Function: QueryPerformanceCounter
+
+BOOL __stdcall QueryPerformanceCounter(LARGE_INTEGER *lpPerformanceCount)
+
+{
+  BOOL BVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402be8. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  BVar1 = QueryPerformanceCounter(lpPerformanceCount);
+  return BVar1;
+}
+
+
+----------------------------------------
+Function: LeaveCriticalSection
+
+void __stdcall LeaveCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x00402bf0. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  LeaveCriticalSection(lpCriticalSection);
+  return;
+}
+
+
+----------------------------------------
+Function: InitializeCriticalSection
+
+void __stdcall InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x00402bf8. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  InitializeCriticalSection(lpCriticalSection);
+  return;
+}
+
+
+----------------------------------------
+Function: GetTickCount
+
+DWORD __stdcall GetTickCount(void)
+
+{
+  DWORD DVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402c00. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  DVar1 = GetTickCount();
+  return DVar1;
+}
+
+
+----------------------------------------
+Function: GetSystemTimeAsFileTime
+
+void __stdcall GetSystemTimeAsFileTime(LPFILETIME lpSystemTimeAsFileTime)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x00402c08. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  GetSystemTimeAsFileTime(lpSystemTimeAsFileTime);
+  return;
+}
+
+
+----------------------------------------
+Function: GetStartupInfoA
+
+void __stdcall GetStartupInfoA(LPSTARTUPINFOA lpStartupInfo)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x00402c10. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  GetStartupInfoA(lpStartupInfo);
+  return;
+}
+
+
+----------------------------------------
+Function: GetLastError
+
+DWORD __stdcall GetLastError(void)
+
+{
+  DWORD DVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402c18. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  DVar1 = GetLastError();
+  return DVar1;
+}
+
+
+----------------------------------------
+Function: GetCurrentThreadId
+
+DWORD __stdcall GetCurrentThreadId(void)
+
+{
+  DWORD DVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402c20. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  DVar1 = GetCurrentThreadId();
+  return DVar1;
+}
+
+
+----------------------------------------
+Function: GetCurrentProcessId
+
+DWORD __stdcall GetCurrentProcessId(void)
+
+{
+  DWORD DVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402c28. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  DVar1 = GetCurrentProcessId();
+  return DVar1;
+}
+
+
+----------------------------------------
+Function: GetCurrentProcess
+
+HANDLE __stdcall GetCurrentProcess(void)
+
+{
+  HANDLE pvVar1;
+  
+                    /* WARNING: Could not recover jumptable at 0x00402c30. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  pvVar1 = GetCurrentProcess();
+  return pvVar1;
+}
+
+
+----------------------------------------
+Function: EnterCriticalSection
+
+void __stdcall EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x00402c38. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  EnterCriticalSection(lpCriticalSection);
+  return;
+}
+
+
+----------------------------------------
+Function: DeleteCriticalSection
+
+void __stdcall DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x00402c40. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  DeleteCriticalSection(lpCriticalSection);
+  return;
+}
+
+
+----------------------------------------
+Function: .text.unlikely
+
+void _text_unlikely(char *param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4)
+
+{
+  FILE *pFVar1;
+  undefined8 local_res10;
+  undefined8 local_res18;
+  undefined8 local_res20;
+  
+  local_res10 = param_2;
+  local_res18 = param_3;
+  local_res20 = param_4;
+  pFVar1 = __acrt_iob_func(2);
+  fwrite("Mingw-w64 runtime failure:\n",1,0x1b,pFVar1);
+  pFVar1 = __acrt_iob_func(2);
+  vfprintf(pFVar1,param_1,(va_list)&local_res10);
+                    /* WARNING: Subroutine does not return */
+  abort();
+}
+
+
+----------------------------------------
